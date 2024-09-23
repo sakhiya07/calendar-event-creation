@@ -1,41 +1,87 @@
 import { Day } from './Day';
-
 import { useState, useCallback } from 'react';
 
-const days = Array.from({ length: 28 }, (_, i) => i + 1);
+const DAYS = 28;
+const MAX_EVENTS_IN_DAY = 5;
+
+const days = Array.from({ length: DAYS }, (_, i) => i);
+const SLOTS = Array.from({ length: DAYS }, () =>
+  Array(MAX_EVENTS_IN_DAY).fill(undefined)
+);
 
 export default function ChartContainer() {
-  const [events, setEvents] = useState({});
+  const [dayWiseSlots, setDayWiseSlots] = useState(SLOTS);
   const [startIndex, setStartIndex] = useState(undefined);
-  const [activeIndex, setActiveIndex] = useState(undefined);
+  const [eventCount, setEventCount] = useState(0);
+  const [hoveredRange, setHoveredRange] = useState([]);
 
   const handleMouseDown = useCallback((event) => {
-    setStartIndex(Number(event.target.closest('.day')?.dataset.entityid));
+    const index = Number(event.target.closest('.day')?.dataset.entityid);
+    setStartIndex(index);
   }, []);
 
-  const handleMouseOver = useCallback((event) => {
-    setActiveIndex(Number(event.target.closest('.day')?.dataset.entityid));
-  }, []);
-
-  const handleMouseUp = useCallback(
+  const handleMouseOver = useCallback(
     (event) => {
-      const endIndex = Number(event.target.closest('.day')?.dataset.entityid);
+      if (startIndex === undefined) return;
+      const activeIndex = Number(
+        event.target.closest('.day')?.dataset.entityid
+      );
 
-      setEvents((prevEvents) => ({
-        ...prevEvents,
-        [`Event: ${Object.keys(prevEvents).length + 1}`]:
-          startIndex < endIndex
-            ? [startIndex, endIndex]
-            : [endIndex, startIndex],
-      }));
-      setStartIndex(undefined);
-      setActiveIndex(undefined);
+      if (activeIndex !== undefined) {
+        const range = [startIndex, activeIndex].sort((a, b) => a - b);
+
+        let selectedDays = dayWiseSlots.slice(range[0], range[1] + 1);
+        let commonSlotIndex = 0;
+
+        selectedDays.forEach((slots) => {
+          let eventExist = false;
+          let availableSlot = MAX_EVENTS_IN_DAY;
+          for (let i = MAX_EVENTS_IN_DAY - 1; i >= 0; i--) {
+            if (
+              (slots[i] === undefined ||
+                slots[i] === `Event ${eventCount + 1}`) &&
+              !eventExist
+            ) {
+              availableSlot = i;
+            } else if (slots[i]) {
+              eventExist = true;
+            }
+          }
+          commonSlotIndex = Math.max(commonSlotIndex, availableSlot);
+        });
+
+        if (commonSlotIndex < MAX_EVENTS_IN_DAY) {
+          const updatedSlots = dayWiseSlots.map((slots, i) => {
+            if (i >= range[0] && i <= range[1]) {
+              return slots.map((slot, i) =>
+                i === commonSlotIndex
+                  ? `Event ${eventCount + 1}`
+                  : slot === `Event ${eventCount + 1}`
+                  ? undefined
+                  : slot
+              );
+            }
+            return slots.map((slot) =>
+              slot === `Event ${eventCount + 1}` ? undefined : slot
+            );
+          });
+
+          setDayWiseSlots(updatedSlots);
+
+          setHoveredRange([range[0], range[1]]);
+        }
+      }
     },
-    [startIndex]
+    [startIndex, dayWiseSlots, eventCount]
   );
 
-  const smallIndex = startIndex < activeIndex ? startIndex : activeIndex;
-  const bigIndex = startIndex < activeIndex ? activeIndex : startIndex;
+  const handleMouseUp = useCallback(() => {
+    if (hoveredRange.length) {
+      setEventCount((prevCount) => prevCount + 1);
+      setStartIndex(undefined);
+      setHoveredRange([]);
+    }
+  }, [hoveredRange]);
 
   return (
     <div
@@ -44,15 +90,8 @@ export default function ChartContainer() {
       onMouseOver={handleMouseOver}
       onMouseUp={handleMouseUp}
     >
-      {days.map((day) => (
-        <Day
-          key={day}
-          day={day}
-          isActive={smallIndex <= day && day <= bigIndex}
-          events={Object.keys(events).filter(
-            (item) => events[item][0] <= day && day <= events[item][1]
-          )}
-        />
+      {days.map((day, index) => (
+        <Day key={day} day={day} slots={dayWiseSlots[index]} />
       ))}
     </div>
   );
