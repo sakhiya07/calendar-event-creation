@@ -23,7 +23,7 @@ Our application allows users to create events within a calendar. Each day on the
 ## Instructions
 
 1. Initially, the calendar has no events. Mock data has been provided in `src/constants/data` to give an idea of the structure and contract of the Day component.
-2. Ensure you do not remove the data-testid attribute from any div elements, as it is essential for testing purposes.
+2. Do not change in `Day` component.
 
 ## Submission Instructions
 
