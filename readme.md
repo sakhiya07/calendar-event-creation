@@ -15,13 +15,15 @@ Our application allows users to create events within a calendar. Each day on the
 
 ## Requirements
 
-1. Only one event should be added per drag operation, and the event should be updated live during the drag.
+1. Only one event should be added per drag operation. On user hover during a drag operation, the user should receive visual feedback showing where the event will be placed across the selected dates, allowing for a clearer event creation experience.
 2. The event should be finalized only when the user releases the mouse.
 3. The added event should appear in the same slot across all selected dates in the range. The event should be added to the next available slot after the maximum occupied slot in the selected date range. For example, if the maximum occupied slot across the selected range is slot 2, the new event should be added to slot 3.
 4. Events should be named as "Event 1," "Event 2," etc., in the order they are added.
-5. On user hover during a drag operation, the user should receive visual feedback showing where the event will be placed across the selected dates, allowing for a clearer event creation experience.
 
-Initially, the calendar has no events. Mock data has been provided in `src/constants/data` to give an idea of the structure and contract of the Day component.
+## Instructions
+
+1. Initially, the calendar has no events. Mock data has been provided in `src/constants/data` to give an idea of the structure and contract of the Day component.
+2. Ensure you do not remove the data-testid attribute from any div elements, as it is essential for testing purposes.
 
 ## Submission Instructions
 
