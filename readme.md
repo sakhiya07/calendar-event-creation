@@ -21,6 +21,7 @@ Our application allows users to create events within a calendar. Each day on the
 4. Events should be named as "Event 1," "Event 2," etc., in the order they are added.
 5. On user hover during a drag operation, the user should receive visual feedback showing where the event will be placed across the selected dates, allowing for a clearer event creation experience.
 
+Initially, the calendar has no events. Mock data has been provided in `src/constants/data` to give an idea of the structure and contract of the Day component.
 
 ## Submission Instructions
 
