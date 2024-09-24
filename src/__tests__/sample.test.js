@@ -62,7 +62,7 @@ test('should correctly add multiple events across various days and slots', () =>
   }
 
   simulateDrag(2, 4, getByTestId);
-  for (let i = 2; i <= 3; i++) {
+  for (let i = 2; i <= 4; i++) {
     const slot = getByTestId(`day-${i}`).querySelector(
       `[data-testid="slot-2"]`
     );
