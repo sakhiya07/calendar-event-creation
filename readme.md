@@ -17,8 +17,12 @@ Our application allows users to create events within a calendar. Each day on the
 
 1. Only one event should be added per drag operation. On user hover during a drag operation, the user should receive visual feedback showing where the event will be placed across the selected dates, allowing for a clearer event creation experience.
 2. The event should be finalized only when the user releases the mouse.
-3. The added event should appear in the same slot across all selected dates in the range. The event should be added to the next available slot after the maximum occupied slot in the selected date range. For example, if the maximum occupied slot across the selected range is slot 2, the new event should be added to slot 3.
-4. Events should be named as "Event 1," "Event 2," etc., in the order they are added.
+3. The added event should appear in the same slot across all selected dates in the range. 
+4. when a user adds a calendar event between specified days, it should be placed to the highest occupied slot plus one. Please consider below scenario for understanding:  
+      1. Event 1 (Day 3–4) occupies Slot 1.
+      2. Event 2 (Day 2–3) occupies Slot 2 as highest occupied slot for Day 2-3 is 1. 
+      3. Event 3 (Day 1–2) occupies Slot 3 as highest occupied slot for Day 1-2 is 2.
+5. Events should be named as "Event 1," "Event 2," etc., in the order they are added.
 
 ## Instructions
 

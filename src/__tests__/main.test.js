@@ -51,6 +51,33 @@ test('should add Event 1 in slot 1 and Event 2 in slot 2 for days 1 to 28', () =
   expect(day27slot1).toBeEmptyDOMElement();
 });
 
+test('when a user adds a calendar event between specified days, it should be placed to the highest occupied slot plus one.', () => {
+  const { getByTestId } = render(<Calendar />);
+  simulateDrag(10, 11, getByTestId);
+  for (let i = 10; i <= 11; i++) {
+    const slot = getByTestId(`day-${i}`).querySelector(
+      `[data-testid="slot-0"]`
+    );
+    expect(slot).toHaveTextContent('Event 1');
+  }
+
+  simulateDrag(11, 12, getByTestId);
+  for (let i = 11; i <= 12; i++) {
+    const slot = getByTestId(`day-${i}`).querySelector(
+      `[data-testid="slot-1"]`
+    );
+    expect(slot).toHaveTextContent('Event 2');
+  }
+
+  simulateDrag(12, 13, getByTestId);
+  for (let i = 12; i <= 13; i++) {
+    const slot = getByTestId(`day-${i}`).querySelector(
+      `[data-testid="slot-2"]`
+    );
+    expect(slot).toHaveTextContent('Event 3');
+  }
+});
+
 test('should correctly add multiple events across various days and slots', () => {
   const { getByTestId } = render(<Calendar />);
   simulateDrag(3, 6, getByTestId);

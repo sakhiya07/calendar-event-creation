@@ -14,7 +14,10 @@ export default function Calendar() {
       <span className="font-bold text-[24px]">October, 2024</span>
       <div className="flex flex-wrap border-t border-l border-[#E5E5E5] border-solid h-full">
         {days.map((day, index) => (
-          <Day key={day} day={day} slots={SLOTS[index]} />
+          <div className="flex-[1_0_14%]" key={day} onMouseDown={() => handleMouseDown(day)}
+               onMouseUp={() => handleMouseUp(day)} onMouseOver={() => handleMouseOver(day)}>
+            <Day key={day} day={day} slots={SLOTS[index]} />
+          </div>
         ))}
       </div>
     </div>
